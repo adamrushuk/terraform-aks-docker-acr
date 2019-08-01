@@ -5,7 +5,7 @@ provider "azurerm" {
 
 # Deploying Terraform Remote State to Azure
 terraform {
-  required_version = "= 0.12"
+  # required_version = "= 0.12"
   backend "azurerm" {
     storage_account_name = "__terraform_storage_account__"
     container_name       = "terraform"
