@@ -20,7 +20,7 @@ variable "resource_group_name" {
 
 # ACR
 variable "acr_name" {
-  default = "acr"
+  default = "__acr_name__"
 }
 
 
