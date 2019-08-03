@@ -14,7 +14,7 @@ variable "location" {
 }
 
 variable "resource_group_name" {
-  default = "aks-rg"
+  default = "__resource_group_name__"
 }
 
 
@@ -27,7 +27,7 @@ variable "acr_name" {
 # AKS
 variable "aks_cluster_name" {
   description = "Name used for both AKS Cluster and DNS Prefix"
-  default     = "MyAksClusterName01"
+  default     = "__aks_cluster_name__"
 }
 
 variable "kubernetes_version" {
