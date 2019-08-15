@@ -18,6 +18,9 @@ kubectl get all
 # Get External IP for NGINX demo
 kubectl get svc nginxdemo
 
+# [OPTIONAL] Delete nginx demo resources
+kubectl delete deployment,svc nginxdemo
+kubectl get pod --watch
 
 
 ### Install Helm ###
@@ -67,3 +70,13 @@ kubectl get svc --namespace default jenkins -o jsonpath="http://{.status.loadBal
 # Get admin password (you need bash installed to decode using base64 cmd)
 $jenkinsAdminPassword = kubectl get secret --namespace default jenkins -o jsonpath="{.data.jenkins-admin-password}"
 bash -c "echo $jenkinsAdminPassword | base64 --decode"
+
+
+## Cleanup
+helm delete jenkins --purge
+
+
+# Troubleshooting
+kubectl describe svc jenkins-agent
+kubectl get svc jenkins-agent -o yaml
+kubectl get svc jenkins-agent --watch
