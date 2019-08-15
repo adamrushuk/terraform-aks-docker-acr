@@ -18,4 +18,5 @@ call az storage container create --name terraform --account-name %TERRAFORM_STOR
 
 :: Get latest supported AKS version and update Azure DevOps Pipeline variable
 SET latest_aks_version=(call az aks get-versions -l %RESOURCE_LOCATION% --query 'orchestrators[-1].orchestratorVersion' -o tsv)
-@echo ##vso[task.setvariable variable=latest_aks_version]%latest_aks_version%
+REM @echo ##vso[task.setvariable variable=latest_aks_version]%latest_aks_version%
+@echo ##vso[task.setvariable variable=latest_aks_version]1.14.5
