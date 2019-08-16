@@ -1,16 +1,30 @@
+# Misc notes for testing / troubleshooting
+# Vars
+$aksClusterName = "MyAksClusterName01"
+
 # Setup Azure Service Principal
 az ad sp create-for-rbac --name "terraform-aks-docker-acr"
 
 # Run pipeline, then once AKS deployed, continue below
 
-# Connect to AKS
-az aks get-credentials --resource-group aks-rg --name MyAksClusterName01
+# Merge AKS cluster details into ~\.kube\config
+az aks get-credentials --resource-group aks-rg --name $aksClusterName
 
 # View AKS Dashboard
-az aks browse --resource-group aks-rg --name MyAksClusterName01
+Start-Job -ScriptBlock {az aks browse --resource-group aks-rg --name $aksClusterName}
+# Also keep dashboard alive in another tab
+Start-Job -ScriptBlock {while(1) { Invoke-RestMethod -Uri 127.0.0.1:8001 ; start-sleep -seconds 60 }}
 
 # Check context (should show AKS cluster name, eg: MyAksClusterName01)
 kubectl config current-context
+
+# [OPTIONAL] List and change context if required
+kubectl config view
+kubectl config get-contexts
+kubectl config use-context $aksClusterName
+
+# [OPTIONAL] Permanently save the namespace for all subsequent kubectl commands in current context
+kubectl config set-context --current --namespace=default
 
 # Show resources
 kubectl get all
@@ -18,8 +32,8 @@ kubectl get all
 # Get External IP for NGINX demo
 kubectl get svc nginxdemo
 
-# [OPTIONAL] Delete nginx demo resources
-kubectl delete deployment,svc nginxdemo
+# [OPTIONAL] Delete NGINX demo resources
+kubectl delete deploy,svc nginxdemo
 kubectl get pod --watch
 
 
@@ -43,27 +57,34 @@ helm version --short
 kubectl get all --namespace=kube-system -l name=tiller
 
 
-
 ### Install Jenkins ###
 # List current Helm releases
 helm list
 
 # Install Jenkins
-helm install --name jenkins stable/jenkins
+helm install --name jenkins stable/jenkins `
+    --set master.servicePort=80 `
+    --set master.slaveListenerServiceType=LoadBalancer `
+    --set master.slaveListenerPort=80 `
+    --set master.disabledAgentProtocols=null
+
+## Monitor
+helm ls --all jenkins
 
 # Show all resources for Jenkins (filter by label)
-kubectl get all -l "helm.sh/chart=jenkins-1.5.0"
+kubectl get all -l "app.kubernetes.io/name=jenkins"
 
 # Monitor pod and service building
-kubectl get pod -l "helm.sh/chart=jenkins-1.5.0" --watch
-kubectl get svc --namespace default -w jenkins
+kubectl get pod -l "app.kubernetes.io/name=jenkins" --watch
+kubectl get svc jenkins --watch
+kubectl get svc --watch
 # Check pod events
-kubectl describe pod -l "helm.sh/chart=jenkins-1.5.0"
+kubectl describe pod -l "app.kubernetes.io/name=jenkins"
 
 
-## Find connection details
+## Find connection details for Jenkins
 # First view complete Service config in JSON format
-kubectl get svc --namespace default jenkins -o json
+kubectl get svc --namespace default jenkins
 # Get Jenkins Loadbalancer URL using jsonpath, eg: {.status.loadBalancer.ingress[0].ip} and {.spec.ports[0].port}
 kubectl get svc --namespace default jenkins -o jsonpath="http://{.status.loadBalancer.ingress[0].ip}:{.spec.ports[0].port}"
 
@@ -72,11 +93,22 @@ $jenkinsAdminPassword = kubectl get secret --namespace default jenkins -o jsonpa
 bash -c "echo $jenkinsAdminPassword | base64 --decode"
 
 
-## Cleanup
-helm delete jenkins --purge
+# Configure local Agent
+Remove-Item -Path "C:\Agents\Jenkins\remoting" -Recurse -Force
+java -jar C:\Users\adamr\Downloads\agent.jar -jnlpUrl http://jenkins:80/computer/windows/slave-agent.jnlp -secret 30a46115af78c2d0b588370d4274e0d84a1ae338b9d5cab9bac3161ee630dcc9 -workDir "C:\Agents\Jenkins"
 
 
 # Troubleshooting
 kubectl describe svc jenkins-agent
 kubectl get svc jenkins-agent -o yaml
 kubectl get svc jenkins-agent --watch
+
+
+## Cleanup
+# Delete helm release
+helm delete --purge jenkins
+
+# Delete ALL resources in Azure (EVERY resource group)
+$jobs = (Get-AzResourceGroup).ResourceGroupName | ForEach-Object { Remove-AzResourceGroup -Name $_ -AsJob -Force }
+$jobs | Wait-Job
+$jobs | Receive-Job -Keep
