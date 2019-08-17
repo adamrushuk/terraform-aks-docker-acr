@@ -2,18 +2,19 @@
 # Vars
 $aksClusterName = "MyAksClusterName01"
 
-# Setup Azure Service Principal
+<# [RunOnce] Setup Azure Service Principal
 az ad sp create-for-rbac --name "terraform-aks-docker-acr"
+#>
 
 # Run pipeline, then once AKS deployed, continue below
 
 # Merge AKS cluster details into ~\.kube\config
-az aks get-credentials --resource-group aks-rg --name $aksClusterName
+az aks get-credentials --resource-group aks-rg --overwrite-existing --name $aksClusterName
 
 # View AKS Dashboard
-Start-Job -ScriptBlock {az aks browse --resource-group aks-rg --name $aksClusterName}
+Start-Job -ScriptBlock { az aks browse --resource-group aks-rg --name $using:aksClusterName }
 # Also keep dashboard alive in another tab
-Start-Job -ScriptBlock {while(1) { Invoke-RestMethod -Uri 127.0.0.1:8001 ; start-sleep -seconds 60 }}
+Start-Job -ScriptBlock { while(1) {Invoke-RestMethod -Uri 127.0.0.1:8001 ; Start-Sleep -seconds 60} }
 
 # Check context (should show AKS cluster name, eg: MyAksClusterName01)
 kubectl config current-context
