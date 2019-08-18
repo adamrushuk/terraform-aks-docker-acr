@@ -1,34 +1,66 @@
 # terraform-aks-docker-acr
 
-Using Terraform to deploy AKS and ACR for custom Docker container usage.
+Terraform will be used to deploy AKS and ACR for custom Docker container usage.
 
-A phased approach will be used, starting out simple, with a view to build functionality over time.
+Using a phased approach, we will start out simple and build functionality over time.
 
-## Azure Build Pipeline
+## Azure DevOps Build Pipeline
 
-First, an Azure Build Pipeline will be created using the classic GUI editor, including these tasks:
+First, an Azure DevOps Build Pipeline will be created using the classic GUI editor, including these tasks:
 
-1. [ ] Copy the following files into artifact staging area:
-  1. [ ] Scripts needed for release pipeline.
-  1. [ ] Terraform configuration files.
-  1. [ ] Kubernetes manifest files to test AKS cluster - use simple NGINX demo deployment.
-1. [ ] Publish a versioned build artifact.
+- [x] Copy the following files into artifact staging area:
+  - [x] Scripts needed for release pipeline.
+  - [x] Terraform configuration files.
+  - [x] Kubernetes manifest files to test AKS cluster - use simple NGINX demo deployment.
+- [x] Publish a versioned build artifact.
 
-## Azure Release Pipeline
+## Azure DevOps Release Pipeline
 
-An Azure Release Pipeline will then be created using the classic GUI editor, with two stages, Provision and Deploy.
+An Azure DevOps Release Pipeline will then be created using the classic GUI editor, with two stages, Provision and Deploy.
 
 ### Provision Stage
 
 The Provision stage will contain the following tasks:
 
-   1. [ ] Provision Terraform Storage using Azure CLI task - used to store Terraform state files.
-   1. [ ] Retrieve storage key and update Pipeline variable using Azure PowerShell task.
-   1. [ ] Replace tokens with Pipeline variables in Terraform configuration files.
-   1. [ ] Run `terraform init` to initialise the backend and download dependencies.
-   1. [ ] Run `terraform plan` to create an execution plan showing changes that will be made once applied.
-   1. [ ] Run `terraform apply` to apply the Terraform configuration files.
+- [ ] Provision Terraform Storage using Azure CLI task - used to store Terraform state files.
+- [ ] Retrieve storage key and update Pipeline variable using Azure PowerShell task.
+- [ ] Replace tokens with Pipeline variables in Terraform configuration files.
+- [ ] Run `terraform init` to initialise the backend and download dependencies.
+- [ ] Run `terraform plan` to create an execution plan showing changes that will be made once applied.
+- [ ] Run `terraform apply` to apply the Terraform configuration files.
 
 ### Deploy Stage
 
+The Deploy stage will contain the following tasks:
+
+- [ ] Install `kubectl` tool.
+- [ ] Apply the `nginxdemo` Deployment using `kubectl`.
+- [ ] Apply the `nginxdemo` Service using `kubectl`.
+
 ## Multi-Stage Azure Pipeline using YAML
+
+After getting the Azure DevOps Build and Release Pipelines working using the classic GUI editor, all tasks will be
+moved into a single YAML definition called `azure-pipelines.yml`.
+
+- [ ] Enable `Multi-stage pipelines` preview feature in Azure DevOps.
+- [ ] Convert GUI tasks from Azure DevOps Build Pipeline.
+- [ ] Convert GUI tasks from Azure DevOps Release Pipeline.
+
+## Build and Use a Custom Docker Image
+
+Build and publish a custom docker image to an Azure Container Registry, then update the Kubernetes deployment
+manifest to pull the latest new image.
+
+- [ ] Import simple node app: https://github.com/adamrushuk/pipelines-javascript-docker/tree/master/app
+- [ ] Build Docker image.
+- [ ] Push Docker image to private Azure Container Registry.
+- [ ] Update the Kubernetes deployment manifest.
+
+## Azure Key Vault
+
+Initially, all required values - including sensitive secrets - are defined as Pipeline Variables. Although the most
+sensitive values are assigned at build time, they would be better placed in a secure Azure Key Vault.
+
+- [ ] Provision an Azure Key Vault using Terraform.
+- [ ] Move sensitive Pipeline Variables in Azure Key Vault.
+- [ ] Define tasks within `azure-pipelines.yml` to get and set Azure Key Vault secrets.
