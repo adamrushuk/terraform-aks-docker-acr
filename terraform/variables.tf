@@ -31,7 +31,7 @@ variable "aks_cluster_name" {
 }
 
 variable "kubernetes_version" {
-  default = "1.14.3"
+  default = "__latest_aks_version__"
 }
 
 variable "agent_count" {
