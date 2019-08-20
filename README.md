@@ -2,7 +2,7 @@
 
 Terraform will be used to deploy AKS and ACR for custom Docker container usage.
 
-Using a phased approach, we will start out simple and build functionality over time.
+Using a phased approach, the plan is to start out simple and build up more functionality over time.
 
 ## Azure DevOps Build Pipeline
 
@@ -12,11 +12,16 @@ First, an Azure DevOps Build Pipeline will be created using the classic GUI edit
   - [x] Scripts needed for release pipeline.
   - [x] Terraform configuration files.
   - [x] Kubernetes manifest files to test AKS cluster - use simple NGINX demo deployment.
+- [ ] Install tools (using Chocolatey) to validate configs: `choco install -y terraform kubeval graphviz`.
+- [ ] Initialise Terraform and override backend for Build stage as we don't need to retain state: `terraform init -backend=false`
+- [ ] Validate staged files using `terraform validate` and `kubeval <filename>.yml`.
+- [ ] Create dependency graph using `terraform graph -draw-cycles -type=plan | dot -Tsvg > graph.svg`.
 - [x] Publish a versioned build artifact.
 
 ## Azure DevOps Release Pipeline
 
-An Azure DevOps Release Pipeline will then be created using the classic GUI editor, with two stages, Provision and Deploy.
+An Azure DevOps Release Pipeline will then be created using the classic GUI editor, with two stages,
+Provision and Deploy.
 
 ### Provision Stage
 
