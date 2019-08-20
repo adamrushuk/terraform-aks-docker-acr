@@ -36,6 +36,8 @@ kubectl get all
 
 # Get External IP for NGINX demo
 kubectl get svc nginxdemo
+kubectl get svc nginxdemo -o json
+kubectl get svc nginxdemo -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
 
 # [OPTIONAL] Delete NGINX demo resources
 kubectl delete deploy,svc nginxdemo
@@ -97,8 +99,12 @@ kubectl get svc --namespace default jenkins -o jsonpath="http://{.status.loadBal
 
 # Get admin password (you need bash installed to decode using base64 cmd)
 $jenkinsAdminPassword = kubectl get secret --namespace default jenkins -o jsonpath="{.data.jenkins-admin-password}"
-bash -c "echo $jenkinsAdminPassword | base64 --decode"
+bash -c "echo $jenkinsAdminPassword | base64 --decode" | clip
+# Output example: X6XZ2JqIux
 
+# TODO: Test using .NET methods
+[System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($jenkinsAdminPassword)) | clip
+# Output example (not same as linux base64): V0RaWVdqSktjVWwxZUE9PQ==
 
 # Configure local Agent for Windows
 Remove-Item -Path "C:\Agents\Jenkins\remoting" -Recurse -Force
