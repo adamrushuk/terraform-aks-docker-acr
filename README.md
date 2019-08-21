@@ -27,22 +27,22 @@ Provision and Deploy.
 
 The Provision stage will contain the following tasks:
 
-- [ ] Provision Terraform Storage using Azure CLI task - used to store Terraform state files.
-- [ ] Retrieve storage key and update Pipeline variable using Azure PowerShell task.
-- [ ] Replace tokens with Pipeline variables in Terraform configuration files.
-- [ ] Run `terraform init` to initialise the backend and download dependencies.
-- [ ] Run `terraform plan` to create an execution plan showing changes that will be made once applied.
-- [ ] Run `terraform apply` to apply the Terraform configuration files.
+- [x] Provision Terraform Storage using Azure CLI task - used to store Terraform state files.
+- [x] Retrieve storage key and update Pipeline variable using Azure PowerShell task.
+- [x] Replace tokens with Pipeline variables in Terraform configuration files.
+- [x] Run `terraform init` to initialise the backend and download dependencies.
+- [x] Run `terraform plan` to create an execution plan showing changes that will be made once applied.
+- [x] Run `terraform apply` to apply the Terraform configuration files.
 
 ### Deploy Stage
 
 The Deploy stage will contain the following tasks:
 
-- [ ] Install `kubectl` tool.
-- [ ] Apply the `nginxdemo` Deployment using `kubectl`.
-- [ ] Apply the `nginxdemo` Service using `kubectl`.
-- [ ] Retrieve `nginxdemo` public IP from AKS LoadBalancer.
-- [ ] Update DNS A record with `nginxdemo` public IP.
+- [x] Install `kubectl` tool.
+- [x] Apply the `nginxdemo` Deployment using `kubectl`.
+- [x] Apply the `nginxdemo` Service using `kubectl`.
+- [x] Retrieve `nginxdemo` public IP from AKS LoadBalancer.
+- [x] Update DNS A record with `nginxdemo` public IP.
 - [ ] Add a Post-deployment Gate (`Invoke REST API: GET`) that confirms DNS points to `nginxdemo` web page.
 
 ## Multi-Stage Azure Pipeline using YAML
