@@ -22,7 +22,7 @@ param (
 )
 
 # Init
-Install-Module -Name "Trackyon.GoDaddy"-Scope "CurrentUser" -Verbose
+Install-Module -Name "Trackyon.GoDaddy"-Scope "CurrentUser" -Force -Verbose
 $apiCredential = [pscredential]::new($ApiKey, (ConvertTo-SecureString -String $ApiSecret -AsPlainText -Force))
 
 # Output Domain
