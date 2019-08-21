@@ -43,7 +43,14 @@ The Deploy stage will contain the following tasks:
 - [x] Apply the `nginxdemo` Service using `kubectl`.
 - [x] Retrieve `nginxdemo` public IP from AKS LoadBalancer.
 - [x] Update DNS A record with `nginxdemo` public IP.
-- [ ] Add a Post-deployment Gate (`Invoke REST API: GET`) that confirms DNS points to `nginxdemo` web page.
+- [x] Add a Post-deployment Gate (`Invoke REST API: GET`) that confirms DNS points to `nginxdemo` web page.
+
+### Test Stage
+
+The Test stage will contain the following tasks:
+
+- [ ] Use Pester to test expected content exists on the web page.
+- [ ] Upload test results.
 
 ## Multi-Stage Azure Pipeline using YAML
 
