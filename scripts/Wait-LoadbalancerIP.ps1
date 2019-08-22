@@ -24,7 +24,7 @@ $importAzAksCredentialSplat = @{
 if ($UseAksAdmin.IsPresent) {
     $importAzAksCredentialSplat.Admin = $true
 }
-Import-AzAksCredential
+Import-AzAksCredential @importAzAksCredentialSplat
 
 # Show resources
 kubectl get all
