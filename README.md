@@ -32,7 +32,9 @@ The Provision stage will contain the following tasks:
 - [x] Replace tokens with Pipeline variables in Terraform configuration files.
 - [x] Run `terraform init` to initialise the backend and download dependencies.
 - [x] Run `terraform plan` to create an execution plan showing changes that will be made once applied.
+  - [ ] Consider moving `terraform plan` to the Build stage, and publish the `out.plan` as an artifact.
 - [x] Run `terraform apply` to apply the Terraform configuration files.
+  - [ ] Add Pipeline variable `UseTfPlan` to optionally use `terraform apply` with `out.plan`.
 
 ### Deploy Stage
 
