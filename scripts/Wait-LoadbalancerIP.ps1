@@ -1,6 +1,6 @@
 # Wait for AKS Loadbalancer IP to exist, then updates Pipeline variable
 # Merge AKS cluster details into ~\.kube\config
-az aks get-credentials --resource-group aks-rg --overwrite-existing --name $aksClusterName
+Import-AzAksCredential -ResourceGroupName $env:resource_group_name -Name $env:aks_cluster_name -Admin -Force
 
 # Show resources
 kubectl get all
