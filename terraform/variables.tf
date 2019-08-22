@@ -10,7 +10,7 @@ variable "client_secret" {
 
 # Resource Group
 variable "location" {
-  default = "East US"
+  default = "__resource_location__"
 }
 
 variable "resource_group_name" {
