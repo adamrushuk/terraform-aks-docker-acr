@@ -11,7 +11,10 @@ param (
     $UseAksAdmin,
 
     [int]
-    $TimeoutSeconds = 1800 # 1800s = 30 mins
+    $TimeoutSeconds = 1800, # 1800s = 30 mins
+
+    [int]
+    $RetryIntervalSeconds = 10
 )
 
 # Merge AKS cluster details into ~\.kube\config
@@ -26,9 +29,6 @@ if ($UseAksAdmin.IsPresent) {
 }
 Import-AzAksCredential @importAzAksCredentialSplat
 
-# Show resources
-kubectl get all --ignore-not-found
-
 # Wait for Loadbalancer IP to exist
 $timer = [Diagnostics.Stopwatch]::StartNew()
 
@@ -36,13 +36,17 @@ while (-not ($dnsIpAddress = kubectl get svc nginxdemo --ignore-not-found -o jso
 
     if ($timer.Elapsed.TotalSeconds -gt $TimeoutSeconds) {
         Write-Host "##vso[task.logissue type=error]Elapsed task time of [$($timer.Elapsed.TotalSeconds)] has exceeded timeout of [$TimeoutSeconds]"
+        exit 1
     } else {
         Write-Verbose -Message "Current Loadbalancer IP value: [$dnsIpAddress]"
-        Write-Host "##vso[task.logissue type=warning]LoadBalancer IP still PENDING. Waiting 10s..."
-        Start-Sleep -Seconds 10
+        Write-Host "##vso[task.logissue type=warning]Still creating LoadBalancer IP... [$($timer.Elapsed.Minutes)m$($timer.Elapsed.Seconds)s]"
+        Start-Sleep -Seconds $RetryIntervalSeconds
     }
 }
 
+$timer.Stop()
+
 # Update pipeline variable
+Write-Verbose -Message "Creation complete after [$($timer.Elapsed.Minutes)m$($timer.Elapsed.Seconds)s]"
 Write-Verbose -Message "Updating Pipeline Variable dns_ip_address with value: [$dnsIpAddress]"
 Write-Host "##vso[task.setvariable variable=dns_ip_address]$dnsIpAddress"
