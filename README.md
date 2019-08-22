@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/adamrushuk/terraform-aks-docker-acr/_apis/build/status/GUI%20terraform-aks-docker-acr%20Build?branchName=master)](https://dev.azure.com/adamrushuk/terraform-aks-docker-acr/_build/latest?definitionId=33&branchName=master)
+
 # terraform-aks-docker-acr
 
 Terraform will be used to deploy AKS and ACR for custom Docker container usage.
