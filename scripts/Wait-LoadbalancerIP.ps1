@@ -41,8 +41,8 @@ while (-not ($dnsIpAddress = kubectl get svc nginxdemo --ignore-not-found -o jso
         Write-Output "##vso[task.logissue type=error]Elapsed task time of [$($timer.Elapsed.TotalSeconds)] has exceeded timeout of [$TimeoutSeconds]"
         exit 1
     } else {
-        Write-Output "Current Loadbalancer IP value: [$dnsIpAddress]"
-        Write-Output "##vso[task.logissue type=warning]Still creating LoadBalancer IP... [$($timer.Elapsed.Minutes)m$($timer.Elapsed.Seconds)s]"
+        Write-Verbose -Message "Current Loadbalancer IP value: [$dnsIpAddress]"
+        Write-Output "##vso[task.logissue type=warning]Still creating LoadBalancer IP... [$($timer.Elapsed.Minutes)m$($timer.Elapsed.Seconds)s elapsed]"
         Start-Sleep -Seconds $RetryIntervalSeconds
     }
 }
