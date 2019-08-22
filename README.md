@@ -1,4 +1,5 @@
 [![Build Status](https://dev.azure.com/adamrushuk/terraform-aks-docker-acr/_apis/build/status/GUI%20terraform-aks-docker-acr%20Build?branchName=master)](https://dev.azure.com/adamrushuk/terraform-aks-docker-acr/_build/latest?definitionId=33&branchName=master)
+![https://vsrm.dev.azure.com/adamrushuk/_apis/public/Release/badge/dd80fa20-cf7c-494a-a5b5-97b32ec95f55/1/1](https://vsrm.dev.azure.com/adamrushuk/_apis/public/Release/badge/dd80fa20-cf7c-494a-a5b5-97b32ec95f55/1/2)
 
 # terraform-aks-docker-acr
 
