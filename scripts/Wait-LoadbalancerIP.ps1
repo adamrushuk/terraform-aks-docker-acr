@@ -7,6 +7,9 @@ param (
     [string]
     $AksClusterName,
 
+    [string]
+    $DnsIpAddressPipelineVariableName = "dns_ip_address",
+
     [switch]
     $UseAksAdmin,
 
@@ -48,5 +51,5 @@ $timer.Stop()
 
 # Update pipeline variable
 Write-Output "Creation complete after [$($timer.Elapsed.Minutes)m$($timer.Elapsed.Seconds)s]"
-Write-Output "Updating Pipeline Variable dns_ip_address with value: [$dnsIpAddress]"
-Write-Output "##vso[task.setvariable variable=dns_ip_address]$dnsIpAddress"
+Write-Output "Updating Pipeline Variable [$DnsIpAddressPipelineVariableName] with value: [$dnsIpAddress]"
+Write-Output "##vso[task.setvariable variable=$DnsIpAddressPipelineVariableName]$dnsIpAddress"
