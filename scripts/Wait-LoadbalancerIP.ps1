@@ -27,7 +27,7 @@ if ($UseAksAdmin.IsPresent) {
 Import-AzAksCredential @importAzAksCredentialSplat
 
 # Show resources
-kubectl get all
+kubectl get all --ignore-not-found
 
 # Wait for Loadbalancer IP to exist
 $timer = [Diagnostics.Stopwatch]::StartNew()
