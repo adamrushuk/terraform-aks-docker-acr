@@ -1,15 +1,21 @@
 # Retrieve storage key for Terraform storage account and assign to pipeline variable
+[CmdletBinding()]
+param (
+    $StorageResourceGroupName,
+    $StorageAccountName
+)
 
 # Get storage access key
-$taskMessage = "Finding Key for Storage Account: [$env:TERRAFORM_STORAGE_ACCOUNT]"
+$taskMessage = "Finding Key for Storage Account: [$StorageAccountName]"
 Write-Verbose -Message "STARTED: $taskMessage..."
 try {
     $getAzureRmStorageAccountKeyParams = @{
-        ResourceGroupName = $env:TERRAFORM_STORAGE_RG
-        AccountName       = $env:TERRAFORM_STORAGE_ACCOUNT
+        ResourceGroupName = $StorageResourceGroupName
+        AccountName       = $StorageAccountName
         ErrorAction       = "Stop"
+        Verbose           = $true
     }
-    $key =(Get-AzureRmStorageAccountKey @getAzureRmStorageAccountKeyParams).Value[0]
+    $key = (Get-AzureRmStorageAccountKey @getAzureRmStorageAccountKeyParams).Value[0]
 
     Write-Verbose -Message "FINISHED: $taskMessage."
 } catch {
