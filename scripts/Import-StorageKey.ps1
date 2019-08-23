@@ -9,13 +9,13 @@ param (
 $taskMessage = "Finding Key for Storage Account: [$StorageAccountName]"
 Write-Output "STARTED: $taskMessage..."
 try {
-    $getAzureRmStorageAccountKeyParams = @{
+    $getAzStorageAccountKeyParams = @{
         ResourceGroupName = $StorageResourceGroupName
         AccountName       = $StorageAccountName
         ErrorAction       = "Stop"
         Verbose           = $true
     }
-    $key = (Get-AzureRmStorageAccountKey @getAzureRmStorageAccountKeyParams).Value[0]
+    $key = (Get-AzStorageAccountKey @getAzStorageAccountKeyParams).Value[0]
 
     Write-Output "FINISHED: $taskMessage."
 } catch {
