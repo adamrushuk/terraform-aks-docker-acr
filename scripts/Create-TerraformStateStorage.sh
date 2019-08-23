@@ -1,6 +1,4 @@
 # This will create an Azure resource group, Storage account and Storage container, used to store terraform remote state
-# Show env vars
-env
 
 # Resource Group
 echo "STARTED: Creating Resource Group..."
@@ -9,7 +7,7 @@ echo "##vso[task.setprogress value=25;]FINISHED: Creating Resource Group."
 
 # Storage Account
 echo "STARTED: Creating Storage Account..."
-az storage account create --name $TERRAFORM_STORAGE_ACCOUNT--resource-group $TERRAFORM_STORAGE_RG \
+az storage account create --name $TERRAFORM_STORAGE_ACCOUNT --resource-group $TERRAFORM_STORAGE_RG \
 --location $RESOURCE_LOCATION --sku Standard_LRS
 echo "##vso[task.setprogress value=50;]FINISHED: Creating Storage Account."
 
