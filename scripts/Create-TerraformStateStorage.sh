@@ -18,7 +18,7 @@ echo "##vso[task.setprogress value=75;]FINISHED: Creating Storage Container."
 
 # Get latest supported AKS version and update Azure DevOps Pipeline variable
 echo "STARTED: Finding latest supported AKS version..."
-latest_aks_version=az aks get-versions -l $RESOURCE_LOCATION --query "orchestrators[-1].orchestratorVersion" -o tsv
+latest_aks_version=$(az aks get-versions -l $RESOURCE_LOCATION --query "orchestrators[-1].orchestratorVersion" -o tsv)
 echo "Updating Pipeline variable with Latest AKS Version:"
 echo $latest_aks_version
 echo ##vso[task.setvariable variable=latest_aks_version]$latest_aks_version
