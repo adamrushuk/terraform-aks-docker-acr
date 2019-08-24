@@ -20,6 +20,7 @@ First, an Azure DevOps Build Pipeline will be created using the classic GUI edit
 - [ ] Validate staged files using `terraform validate` and `kubeval <filename>.yml`.
 - [ ] Create dependency graph using `terraform graph -draw-cycles -type=plan | dot -Tsvg > graph.svg`.
 - [x] Publish a versioned build artifact.
+- [ ] Create an architecture diagram of current stage(s).
 
 ## Azure DevOps Release Pipeline
 
@@ -56,6 +57,7 @@ The Test stage will contain the following tasks:
 
 - [ ] Use Pester to test expected content exists on the web page.
 - [ ] Upload test results.
+- [ ] Create an architecture diagram of current stage(s).
 
 ## Multi-Stage Azure Pipeline using YAML
 
@@ -65,6 +67,8 @@ moved into a single YAML definition called `azure-pipelines.yml`.
 - [ ] Enable `Multi-stage pipelines` preview feature in Azure DevOps.
 - [ ] Convert GUI tasks from Azure DevOps Build Pipeline.
 - [ ] Convert GUI tasks from Azure DevOps Release Pipeline.
+- [ ] Add Monitoring / Log Analytics / Auditing to AKS.
+- [ ] Create an architecture diagram of current stage(s).
 
 ## Build and Use a Custom Docker Image
 
@@ -75,6 +79,7 @@ manifest to pull the latest new image.
 - [ ] Build Docker image.
 - [ ] Push Docker image to private Azure Container Registry.
 - [ ] Update the Kubernetes deployment manifest.
+- [ ] Create an architecture diagram of current stage(s).
 
 ## Azure Key Vault
 
@@ -84,3 +89,4 @@ sensitive values are assigned at build time, they would be better placed in a se
 - [ ] Provision an Azure Key Vault using Terraform.
 - [ ] Move sensitive Pipeline Variables in Azure Key Vault.
 - [ ] Define tasks within `azure-pipelines.yml` to get and set Azure Key Vault secrets.
+- [ ] Create an architecture diagram of current stage(s).
