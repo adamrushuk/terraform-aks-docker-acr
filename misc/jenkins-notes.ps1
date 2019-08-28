@@ -1,5 +1,6 @@
 # Misc notes for installing / troubleshooting Jenkins with Helm
 # Vars
+$aksRgName = "aks-asr1234-rg"
 $aksClusterName = "MyAksClusterName01"
 
 
@@ -13,10 +14,10 @@ az ad sp create-for-rbac --name "terraform-aks-docker-acr"
 
 
 # Merge AKS cluster details into ~\.kube\config
-az aks get-credentials --resource-group aks-rg --overwrite-existing --name $aksClusterName
+az aks get-credentials --resource-group $aksRgName --overwrite-existing --name $aksClusterName
 
 # View AKS Dashboard
-Start-Job -ScriptBlock { az aks browse --resource-group aks-rg --name $using:aksClusterName }
+Start-Job -ScriptBlock { az aks browse --resource-group $using:aksRgName --name $using:aksClusterName }
 # Also keep dashboard alive in another tab
 Start-Job -ScriptBlock { while(1) {Invoke-RestMethod -Uri 127.0.0.1:8001 ; Start-Sleep -Seconds 60} }
 
