@@ -16,6 +16,7 @@ First, an Azure DevOps Build Pipeline will be created using the classic GUI edit
   - [x] Terraform configuration files.
   - [x] Kubernetes manifest files to test AKS cluster - use simple NGINX demo deployment.
 - [ ] Install tools (using Chocolatey) to validate configs: `choco install -y terraform kubeval graphviz`.
+- [ ] (Move task here from Release Stage) Replace tokens with Pipeline variables in Terraform configuration files.
 - [ ] Initialise Terraform and override backend for Build stage as we don't need to retain state: `terraform init -backend=false`
 - [ ] Validate staged files using `terraform validate` and `kubeval <filename>.yml`.
 - [ ] Create dependency graph using `terraform graph -draw-cycles -type=plan | dot -Tsvg > graph.svg`.
@@ -69,6 +70,7 @@ moved into a single YAML definition called `azure-pipelines.yml`.
 - [ ] Convert GUI tasks from Azure DevOps Release Pipeline.
 - [ ] Add Monitoring / Log Analytics / Auditing to AKS.
 - [ ] Create an architecture diagram of current stage(s).
+- [ ] Consider using separate YAML files in templates: https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema#template-references
 
 ## Build and Use a Custom Docker Image
 
