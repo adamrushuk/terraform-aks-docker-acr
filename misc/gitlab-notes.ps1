@@ -129,9 +129,8 @@ kubectl get configmap,secrets,pv,pvc,hpa,pdb
 kubectl delete configmap,secrets,pv,pvc,hpa,pdb -l release=gitlab
 kubectl delete configmap --all
 
-# Delete ALL resources in Azure (EVERY resource group)
-# ! Use with caution as EVERY resource group will be removed
-$jobs = (Get-AzResourceGroup).ResourceGroupName | ForEach-Object { Remove-AzResourceGroup -Name $_ -AsJob -Force }
+# Delete EVERY resource group that does NOT have tag: keep=true
+$jobs = Get-AzResourceGroup | Where-Object {$_.Tags -eq $null -or $_.Tags.GetEnumerator().Name -ne "keep"} | Remove-AzResourceGroup -Force -AsJob
 $jobs | Wait-Job
 $jobs | Receive-Job -Keep
 #endregion Cleanup
