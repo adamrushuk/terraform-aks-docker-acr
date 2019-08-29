@@ -129,8 +129,8 @@ kubectl get configmap,secrets,pv,pvc,hpa,pdb
 kubectl delete configmap,secrets,pv,pvc,hpa,pdb -l release=gitlab
 kubectl delete configmap --all
 
-# Delete EVERY resource group that does NOT have tag: keep=true
-$jobs = Get-AzResourceGroup | Where-Object {$_.Tags -eq $null -or $_.Tags.GetEnumerator().Name -ne "keep"} | Remove-AzResourceGroup -Force -AsJob
+# Delete EVERY resource group that does NOT include tag: keep=true
+$jobs = Get-AzResourceGroup | Where-Object {$_.Tags -eq $null -or $_.Tags.GetEnumerator().Name -notcontains "keep"} | Remove-AzResourceGroup -Force -AsJob
 $jobs | Wait-Job
 $jobs | Receive-Job -Keep
 #endregion Cleanup
